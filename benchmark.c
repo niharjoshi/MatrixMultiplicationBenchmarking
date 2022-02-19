@@ -58,9 +58,9 @@ void blockedMultiplication(int **matrix1, int **matrix2, int **matrix3, int size
     for(int i = 0; i < size; i += block) {
         for(int j = 0; j < size; j += block) {
             for(int k = 0; k < size; k += block) {
-                for(int x = 0; x < (i + block); x++) {
-                    for(int y = 0; y < (j + block); y++) {
-                        for(int z = 0; z < (k + block); z++) {
+                for(int x = i; x < (i + block); x++) {
+                    for(int y = j; y < (j + block); y++) {
+                        for(int z = k; z < (k + block); z++) {
                             matrix3[x][y] += matrix1[x][z] * matrix2[z][y];
                         }
                     }
@@ -72,7 +72,7 @@ void blockedMultiplication(int **matrix1, int **matrix2, int **matrix3, int size
 
 void trial1(int size)
 {
-    printf("Matrix size of %d x %d, original multiplication:\n", size, size);
+    printf("\nMatrix size of %d x %d, original multiplication:\n", size, size);
     int **matrix1 = createMatrix(size);
     initializeMatrix(matrix1, size);
     int **matrix2 = createMatrix(size);
@@ -82,7 +82,7 @@ void trial1(int size)
     originalMultiplication(matrix1, matrix2, matrix3, size);
     time_capture = clock() - time_capture;
     double execution_time = ((double)time_capture)/CLOCKS_PER_SEC;
-    printf("Execution time for trial 1: %f seconds\n", execution_time);
+    printf("Execution time for trial 1: %f seconds\n\n", execution_time);
     deleteMatrix(matrix1, size);
     deleteMatrix(matrix2, size);
     deleteMatrix(matrix3, size);
@@ -98,7 +98,7 @@ void trial2()
 
 void trial3(int size, int block)
 {
-    printf("Matrix size of %d x %d, block of size %d, blocked multiplication:\n", size, size, block);
+    printf("\nMatrix size of %d x %d, block of size %d, blocked multiplication:\n", size, size, block);
     int **matrix1 = createMatrix(size);
     initializeMatrix(matrix1, size);
     int **matrix2 = createMatrix(size);
@@ -108,7 +108,7 @@ void trial3(int size, int block)
     blockedMultiplication(matrix1, matrix2, matrix3, size, block);
     time_capture = clock() - time_capture;
     double execution_time = ((double)time_capture)/CLOCKS_PER_SEC;
-    printf("Execution time for trial 1: %f seconds\n", execution_time);
+    printf("Execution time for trial 1: %f seconds\n\n", execution_time);
     deleteMatrix(matrix1, size);
     deleteMatrix(matrix2, size);
     deleteMatrix(matrix3, size);
@@ -123,17 +123,17 @@ int main(int argc, char* argv[])
 {
     if(strcmp(argv[1], "1") == 0)
     {
-        printf("Beginning trial 1:\n");
+        printf("\nBeginning trial 1:\n");
         trial1(MATRIX_SIZE_MIN * 64);
     }
     else if(strcmp(argv[1], "2") == 0)
     {
-        printf("Beginning trial 2:\n");
+        printf("\nBeginning trial 2:\n");
         trial2();
     }
     else if(strcmp(argv[1], "3") == 0)
     {
-        printf("Beginning trial 3:\n");
+        printf("\nBeginning trial 3:\n");
         for(int i = MATRIX_SIZE_MIN; i <= MATRIX_SIZE_MAX; i *= 2)
         {
             trial3(i, BLOCK_SIZE_MIN * 2);
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
     }
     else if(strcmp(argv[1], "4") == 0)
     {
-        printf("Beginning trial 4:\n");
+        printf("\nBeginning trial 4:\n");
         for(int i = BLOCK_SIZE_MIN; i <= BLOCK_SIZE_MAX; i *= 2)
         {
             trial4(MATRIX_SIZE_MAX / 2, i);
